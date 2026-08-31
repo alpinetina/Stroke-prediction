@@ -1,0 +1,143 @@
+cohort,variable,type,no_stroke,stroke,p_value,n_missing
+raw (pre-imputation),N,n,6163,313,,0
+raw (pre-imputation),age,continuous,52.82 (17.37),66.74 (10.79),1.6328688965918662e-68,0
+raw (pre-imputation),income_poverty_ratio,continuous,2.93 (1.66),2.33 (1.58),2.0946321186723714e-10,0
+raw (pre-imputation),bmi,continuous,29.85 (7.39),30.01 (7.33),0.7456056758327908,1290
+raw (pre-imputation),waist_circumference_cm,continuous,101.02 (16.95),104.64 (17.20),0.002728395315457762,1454
+raw (pre-imputation),systolic_bp,continuous,122.59 (17.80),130.37 (20.70),4.591379968898412e-08,1377
+raw (pre-imputation),diastolic_bp,continuous,74.87 (10.93),76.14 (12.49),0.12856369747224924,1377
+raw (pre-imputation),hba1c,continuous,5.76 (1.09),6.23 (1.47),3.4407550556184974e-06,1454
+raw (pre-imputation),fasting_glucose,continuous,109.07 (32.33),118.53 (34.71),0.004643516456648006,3682
+raw (pre-imputation),total_cholesterol,continuous,188.88 (42.47),176.55 (43.78),8.648751975766682e-05,1690
+raw (pre-imputation),hdl_cholesterol,continuous,54.66 (14.86),54.31 (15.67),0.7476291884028379,1690
+raw (pre-imputation),triglycerides,continuous,120.72 (89.51),126.04 (71.66),0.4505617349929878,3795
+raw (pre-imputation),omega3_index,continuous,4.34 (1.58),4.30 (1.64),0.7318446730203443,1492
+raw (pre-imputation),alcohol_drinks_per_week,continuous,4.42 (8.70),4.21 (10.22),0.8102341129119056,2615
+raw (pre-imputation),rx_med_count,continuous,2.14 (1.96),4.04 (1.53),3.954839692919074e-65,4
+raw (pre-imputation),rdw,continuous,13.83 (1.32),14.50 (2.23),1.302799449333459e-05,1450
+raw (pre-imputation),mpv,continuous,8.16 (0.91),8.19 (0.98),0.6245552411343128,1450
+raw (pre-imputation),hematocrit,continuous,41.18 (4.00),40.93 (4.37),0.39501156815547644,1450
+raw (pre-imputation),hemoglobin,continuous,13.91 (1.47),13.72 (1.56),0.07798916555207902,1450
+raw (pre-imputation),wbc_count,continuous,6.91 (2.03),7.31 (2.25),0.008678876550417325,1450
+raw (pre-imputation),platelet_count,continuous,256.06 (68.22),243.45 (71.08),0.009147124090256066,1450
+raw (pre-imputation),neutrophils_count,continuous,4.12 (1.60),4.47 (1.78),0.0036808166008617522,1459
+raw (pre-imputation),lymphocytes_count,continuous,2.02 (0.71),1.98 (0.83),0.5450020708632979,1459
+raw (pre-imputation),vascular_risk_score,continuous,1.08 (1.35),2.60 (1.74),3.3253610913860054e-40,0
+raw (pre-imputation),sex = 1.0,categorical,2722 (44.2%),157 (50.2%),0.041178983014001934,0
+raw (pre-imputation),sex = 2.0,categorical,3441 (55.8%),156 (49.8%),0.041178983014001934,0
+raw (pre-imputation),race = 1.0,categorical,414 (6.7%),13 (4.2%),0.14690242228164022,0
+raw (pre-imputation),race = 2.0,categorical,575 (9.3%),33 (10.5%),0.14690242228164022,0
+raw (pre-imputation),race = 3.0,categorical,3713 (60.2%),181 (57.8%),0.14690242228164022,0
+raw (pre-imputation),race = 4.0,categorical,735 (11.9%),48 (15.3%),0.14690242228164022,0
+raw (pre-imputation),race = 6.0,categorical,322 (5.2%),13 (4.2%),0.14690242228164022,0
+raw (pre-imputation),race = 7.0,categorical,404 (6.6%),25 (8.0%),0.14690242228164022,0
+raw (pre-imputation),education = 1.0,categorical,242 (3.9%),26 (8.3%),5.937319785792458e-16,8
+raw (pre-imputation),education = 2.0,categorical,482 (7.8%),54 (17.3%),5.937319785792458e-16,8
+raw (pre-imputation),education = 3.0,categorical,1315 (21.4%),85 (27.2%),5.937319785792458e-16,8
+raw (pre-imputation),education = 4.0,categorical,1898 (30.8%),91 (29.1%),5.937319785792458e-16,8
+raw (pre-imputation),education = 5.0,categorical,2218 (36.0%),57 (18.2%),5.937319785792458e-16,8
+raw (pre-imputation),hypertension_diagnosis = 0,categorical,3944 (64.0%),90 (28.8%),6.451620202783e-35,0
+raw (pre-imputation),hypertension_diagnosis = 1,categorical,2219 (36.0%),223 (71.2%),6.451620202783e-35,0
+raw (pre-imputation),bp_medication = 0,categorical,4355 (70.7%),110 (35.1%),1.7307941782233968e-36,0
+raw (pre-imputation),bp_medication = 1,categorical,1808 (29.3%),203 (64.9%),1.7307941782233968e-36,0
+raw (pre-imputation),diabetes_diagnosis = 0,categorical,5372 (87.2%),214 (68.4%),5.131809679794925e-17,0
+raw (pre-imputation),diabetes_diagnosis = 1,categorical,791 (12.8%),99 (31.6%),5.131809679794925e-17,0
+raw (pre-imputation),heart_failure = 0,categorical,5947 (96.5%),254 (81.2%),1.0623859234491036e-23,0
+raw (pre-imputation),heart_failure = 1,categorical,216 (3.5%),59 (18.8%),1.0623859234491036e-23,0
+raw (pre-imputation),coronary_hd = 0,categorical,5893 (95.6%),250 (79.9%),3.47458063119476e-22,0
+raw (pre-imputation),coronary_hd = 1,categorical,270 (4.4%),63 (20.1%),3.47458063119476e-22,0
+raw (pre-imputation),heart_attack = 0,categorical,5947 (96.5%),256 (81.8%),2.8652626777387397e-22,0
+raw (pre-imputation),heart_attack = 1,categorical,216 (3.5%),57 (18.2%),2.8652626777387397e-22,0
+raw (pre-imputation),liver_disease = 0,categorical,5822 (94.5%),290 (92.7%),0.16709122152017175,0
+raw (pre-imputation),liver_disease = 1,categorical,341 (5.5%),23 (7.3%),0.16709122152017175,0
+raw (pre-imputation),copd = 0,categorical,5763 (93.5%),244 (78.0%),6.156681722293888e-18,0
+raw (pre-imputation),copd = 1,categorical,400 (6.5%),69 (22.0%),6.156681722293888e-18,0
+raw (pre-imputation),thyroid_disease = 0,categorical,5333 (86.5%),253 (80.8%),0.006852921782967562,0
+raw (pre-imputation),thyroid_disease = 1,categorical,830 (13.5%),60 (19.2%),0.006852921782967562,0
+raw (pre-imputation),cancer = 0,categorical,5270 (85.5%),229 (73.2%),3.780336938331064e-08,0
+raw (pre-imputation),cancer = 1,categorical,893 (14.5%),84 (26.8%),3.780336938331064e-08,0
+raw (pre-imputation),smoke_current = 0,categorical,5229 (84.8%),244 (78.0%),0.0017095137049222765,0
+raw (pre-imputation),smoke_current = 1,categorical,934 (15.2%),69 (22.0%),0.0017095137049222765,0
+raw (pre-imputation),smoke_former = 0,categorical,4569 (74.1%),186 (59.4%),3.944860772564965e-08,0
+raw (pre-imputation),smoke_former = 1,categorical,1594 (25.9%),127 (40.6%),3.944860772564965e-08,0
+raw (pre-imputation),smoke_never = 0,categorical,2540 (41.2%),196 (62.6%),1.166425536606321e-13,0
+raw (pre-imputation),smoke_never = 1,categorical,3623 (58.8%),117 (37.4%),1.166425536606321e-13,0
+raw (pre-imputation),moderate_activity = 0,categorical,32 (0.5%),2 (0.6%),0.6792649395031842,0
+raw (pre-imputation),moderate_activity = 1,categorical,6131 (99.5%),311 (99.4%),0.6792649395031842,0
+raw (pre-imputation),vigorous_activity = 0,categorical,24 (0.4%),3 (1.0%),0.13958651661539262,0
+raw (pre-imputation),vigorous_activity = 1,categorical,6139 (99.6%),310 (99.0%),0.13958651661539262,0
+raw (pre-imputation),kidney_disease = 0,categorical,5953 (96.6%),271 (86.6%),6.3067768700322e-13,0
+raw (pre-imputation),kidney_disease = 1,categorical,210 (3.4%),42 (13.4%),6.3067768700322e-13,0
+raw (pre-imputation),rx_med_use = 0,categorical,1966 (31.9%),18 (5.8%),1.3898717319460518e-28,0
+raw (pre-imputation),rx_med_use = 1,categorical,4197 (68.1%),295 (94.2%),1.3898717319460518e-28,0
+MICE-completed,N,n,6163,313,,0
+MICE-completed,age,continuous,52.82 (17.37),66.74 (10.79),1.632868896591908e-68,0
+MICE-completed,income_poverty_ratio,continuous,2.93 (1.66),2.33 (1.58),2.0946321186723714e-10,0
+MICE-completed,bmi,continuous,29.86 (7.08),30.10 (7.00),0.5502001105909102,0
+MICE-completed,waist_circumference_cm,continuous,101.52 (16.80),104.47 (16.56),0.002342183836714061,0
+MICE-completed,systolic_bp,continuous,122.62 (17.34),130.85 (19.39),1.3783196495495724e-12,0
+MICE-completed,diastolic_bp,continuous,74.86 (10.67),75.85 (11.57),0.1370060204788024,0
+MICE-completed,hba1c,continuous,5.75 (0.96),6.23 (1.28),2.781774969150545e-10,0
+MICE-completed,fasting_glucose,continuous,109.67 (29.09),121.74 (37.76),5.304381038758777e-08,0
+MICE-completed,total_cholesterol,continuous,192.24 (56.32),178.44 (59.00),6.410748194368681e-05,0
+MICE-completed,hdl_cholesterol,continuous,56.51 (18.64),56.68 (19.09),0.8784597983040435,0
+MICE-completed,triglycerides,continuous,142.88 (100.65),158.18 (107.83),0.014542430859393517,0
+MICE-completed,omega3_index,continuous,4.37 (1.52),4.42 (1.51),0.5458450294193838,0
+MICE-completed,alcohol_drinks_per_week,continuous,4.42 (7.26),4.94 (7.78),0.24532877525585525,0
+MICE-completed,rx_med_count,continuous,2.14 (1.96),4.04 (1.53),1.6235631469833008e-65,0
+MICE-completed,rdw,continuous,13.96 (1.30),14.44 (1.57),1.9256374595245165e-07,0
+MICE-completed,mpv,continuous,8.15 (0.87),8.16 (0.92),0.8984872124750479,0
+MICE-completed,hematocrit,continuous,41.12 (3.94),41.01 (4.12),0.6603396478111397,0
+MICE-completed,hemoglobin,continuous,13.88 (1.43),13.65 (1.54),0.009837519146511273,0
+MICE-completed,wbc_count,continuous,7.15 (2.80),7.71 (3.05),0.0015978561348345731,0
+MICE-completed,platelet_count,continuous,258.46 (65.30),244.21 (65.25),0.0001923436103033826,0
+MICE-completed,neutrophils_count,continuous,4.37 (2.21),4.44 (2.24),0.6063347277118031,0
+MICE-completed,lymphocytes_count,continuous,2.09 (0.90),2.00 (0.94),0.11593361459619757,0
+MICE-completed,vascular_risk_score,continuous,1.08 (1.35),2.60 (1.74),3.3253610913860054e-40,0
+MICE-completed,sex = 1.0,categorical,2722 (44.2%),157 (50.2%),0.041178983014001934,0
+MICE-completed,sex = 2.0,categorical,3441 (55.8%),156 (49.8%),0.041178983014001934,0
+MICE-completed,race = 1.0,categorical,414 (6.7%),13 (4.2%),0.14690242228164022,0
+MICE-completed,race = 2.0,categorical,575 (9.3%),33 (10.5%),0.14690242228164022,0
+MICE-completed,race = 3.0,categorical,3713 (60.2%),181 (57.8%),0.14690242228164022,0
+MICE-completed,race = 4.0,categorical,735 (11.9%),48 (15.3%),0.14690242228164022,0
+MICE-completed,race = 6.0,categorical,322 (5.2%),13 (4.2%),0.14690242228164022,0
+MICE-completed,race = 7.0,categorical,404 (6.6%),25 (8.0%),0.14690242228164022,0
+MICE-completed,education = 1.0,categorical,243 (3.9%),26 (8.3%),6.458995236053242e-16,0
+MICE-completed,education = 2.0,categorical,483 (7.8%),54 (17.3%),6.458995236053242e-16,0
+MICE-completed,education = 3.0,categorical,1317 (21.4%),85 (27.2%),6.458995236053242e-16,0
+MICE-completed,education = 4.0,categorical,1899 (30.8%),91 (29.1%),6.458995236053242e-16,0
+MICE-completed,education = 5.0,categorical,2221 (36.0%),57 (18.2%),6.458995236053242e-16,0
+MICE-completed,hypertension_diagnosis = 0,categorical,3944 (64.0%),90 (28.8%),6.451620202783e-35,0
+MICE-completed,hypertension_diagnosis = 1,categorical,2219 (36.0%),223 (71.2%),6.451620202783e-35,0
+MICE-completed,bp_medication = 0,categorical,4355 (70.7%),110 (35.1%),1.7307941782233968e-36,0
+MICE-completed,bp_medication = 1,categorical,1808 (29.3%),203 (64.9%),1.7307941782233968e-36,0
+MICE-completed,diabetes_diagnosis = 0,categorical,5372 (87.2%),214 (68.4%),5.131809679794925e-17,0
+MICE-completed,diabetes_diagnosis = 1,categorical,791 (12.8%),99 (31.6%),5.131809679794925e-17,0
+MICE-completed,heart_failure = 0,categorical,5947 (96.5%),254 (81.2%),1.0623859234491036e-23,0
+MICE-completed,heart_failure = 1,categorical,216 (3.5%),59 (18.8%),1.0623859234491036e-23,0
+MICE-completed,coronary_hd = 0,categorical,5893 (95.6%),250 (79.9%),3.47458063119476e-22,0
+MICE-completed,coronary_hd = 1,categorical,270 (4.4%),63 (20.1%),3.47458063119476e-22,0
+MICE-completed,heart_attack = 0,categorical,5947 (96.5%),256 (81.8%),2.8652626777387397e-22,0
+MICE-completed,heart_attack = 1,categorical,216 (3.5%),57 (18.2%),2.8652626777387397e-22,0
+MICE-completed,liver_disease = 0,categorical,5822 (94.5%),290 (92.7%),0.16709122152017175,0
+MICE-completed,liver_disease = 1,categorical,341 (5.5%),23 (7.3%),0.16709122152017175,0
+MICE-completed,copd = 0,categorical,5763 (93.5%),244 (78.0%),6.156681722293888e-18,0
+MICE-completed,copd = 1,categorical,400 (6.5%),69 (22.0%),6.156681722293888e-18,0
+MICE-completed,thyroid_disease = 0,categorical,5333 (86.5%),253 (80.8%),0.006852921782967562,0
+MICE-completed,thyroid_disease = 1,categorical,830 (13.5%),60 (19.2%),0.006852921782967562,0
+MICE-completed,cancer = 0,categorical,5270 (85.5%),229 (73.2%),3.780336938331064e-08,0
+MICE-completed,cancer = 1,categorical,893 (14.5%),84 (26.8%),3.780336938331064e-08,0
+MICE-completed,smoke_current = 0,categorical,5229 (84.8%),244 (78.0%),0.0017095137049222765,0
+MICE-completed,smoke_current = 1,categorical,934 (15.2%),69 (22.0%),0.0017095137049222765,0
+MICE-completed,smoke_former = 0,categorical,4569 (74.1%),186 (59.4%),3.944860772564965e-08,0
+MICE-completed,smoke_former = 1,categorical,1594 (25.9%),127 (40.6%),3.944860772564965e-08,0
+MICE-completed,smoke_never = 0,categorical,2540 (41.2%),196 (62.6%),1.166425536606321e-13,0
+MICE-completed,smoke_never = 1,categorical,3623 (58.8%),117 (37.4%),1.166425536606321e-13,0
+MICE-completed,moderate_activity = 0,categorical,32 (0.5%),2 (0.6%),0.6792649395031842,0
+MICE-completed,moderate_activity = 1,categorical,6131 (99.5%),311 (99.4%),0.6792649395031842,0
+MICE-completed,vigorous_activity = 0,categorical,24 (0.4%),3 (1.0%),0.13958651661539262,0
+MICE-completed,vigorous_activity = 1,categorical,6139 (99.6%),310 (99.0%),0.13958651661539262,0
+MICE-completed,kidney_disease = 0,categorical,5953 (96.6%),271 (86.6%),6.3067768700322e-13,0
+MICE-completed,kidney_disease = 1,categorical,210 (3.4%),42 (13.4%),6.3067768700322e-13,0
+MICE-completed,rx_med_use = 0,categorical,1966 (31.9%),18 (5.8%),1.3898717319460518e-28,0
+MICE-completed,rx_med_use = 1,categorical,4197 (68.1%),295 (94.2%),1.3898717319460518e-28,0
