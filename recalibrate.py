@@ -34,6 +34,7 @@ def main():
     warnings.filterwarnings("ignore", category=FutureWarning)
     warnings.filterwarnings("ignore", category=UserWarning)
 
+    # reads best_params saved by tune_models.py, one row per model
     tuned_results = pd.read_csv(TUNED_RESULTS_PATH)
     train = pd.read_csv(TRAIN_PATH)
     test = pd.read_csv(TEST_PATH)
@@ -43,6 +44,7 @@ def main():
 
     preprocessor = build_preprocessor(X_train)
     scale_pos_weight = (len(y_train) - y_train.sum()) / y_train.sum()
+    #untrained estimator instances from SEARCH_SPACE, scale_pos_weight recomputed on import
     SEARCH_SPACE["XGBoost"][0].set_params(scale_pos_weight=scale_pos_weight)
 
     os.makedirs(MODELS_DIR, exist_ok=True)
@@ -56,24 +58,31 @@ def main():
         pipe = Pipeline([("preprocessor", preprocessor), ("classifier", base_classifier)])
         pipe.set_params(**best_params)
 
+        #uncalibrated fit, used only to report pre-calibration metrics below
         pipe.fit(X_train, y_train)
         proba_before = pipe.predict_proba(X_test)[:, 1]
         brier_before = brier_score_loss(y_test, proba_before)
         citl_before = calibration_in_the_large(y_test, proba_before)
 
+        #cv=5 refits fresh clones internally via cross-validation, ignoring the fit above
         calibrated = CalibratedClassifierCV(pipe, method="sigmoid", cv=5)
 
         cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+        #out-of-fold calibrated probabilities on training data
         oof_proba = cross_val_predict(
             calibrated, X_train, y_train, cv=cv, method="predict_proba", n_jobs=-1
         )[:, 1]
+        #G-mean-maximizing threshold, selected on OOF training predictions only
         threshold = best_threshold(y_train.values, oof_proba)
 
+        #final calibrated model refit on full training set
         calibrated.fit(X_train, y_train)
 
+        #saved calibrated pipeline, source for Chapter 4 results and SHAP analysis
         joblib.dump(calibrated, os.path.join(MODELS_DIR, f"{model_name}_calibrated.joblib"))
 
         proba = calibrated.predict_proba(X_test)[:, 1]
+        #final classification using the OOF-selected threshold
         pred = (proba >= threshold).astype(int)
         rows.append({
             "model": model_name,
