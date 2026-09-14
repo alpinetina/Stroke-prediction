@@ -5,12 +5,9 @@ import pandas as pd
 RAW_DIR = "data/raw"
 OUT_PATH = os.path.join("data", "processed", "nhanes_merged_raw.csv")
 
-# Descriptive-only columns (Table 1 characteristics)
 DESCRIPTIVE_ONLY_COLUMNS = ["vascular_risk_score"]
 
 def load_xpt(name: str, columns: list) -> pd.DataFrame:
-    """Load an XPT file, raising if the file or any requested column
-    is missing."""
     file_path = os.path.join(RAW_DIR, f"{name}.xpt")
 
     if not os.path.exists(file_path):
@@ -26,14 +23,10 @@ def load_xpt(name: str, columns: list) -> pd.DataFrame:
 
 
 def recode_missing(series: pd.Series, missing_codes: list) -> pd.Series:
-    """Convert NHANES Refused/Don't know sentinel codes to NaN."""
     return series.replace(missing_codes, np.nan)
 
-
+#drinks/week = frequency(ALQ121) x quantity(ALQ130). ALQ111==2 (never drank) sets 0
 def compute_alcohol(alq: pd.DataFrame) -> pd.DataFrame:
-    """Drinks/week = frequency(ALQ121) x quantity(ALQ130). ALQ111==2
-    (never drank) sets 0 directly, since ALQ121/ALQ130 are skipped
-    for those respondents."""
     alq = alq.copy()
     alq["ALQ111"] = recode_missing(alq["ALQ111"], [7, 9])
     alq["ALQ121"] = recode_missing(alq["ALQ121"], [77, 99])
@@ -61,12 +54,8 @@ def compute_alcohol(alq: pd.DataFrame) -> pd.DataFrame:
     alq["alcohol_drinks_per_week"] = drinks_per_week
     return alq[["SEQN", "alcohol_drinks_per_week"]]
 
-
+#rx_med_count is set to 0 where rx_med_use==0 and count is NaN (known zero, not missing)
 def load_prescriptions() -> pd.DataFrame:
-    """RXQ_RX_L is drug-level (multiple rows per SEQN); RXQ033/RXQ050
-    are person-level and repeated on every row, so keep one row per
-    person. rx_med_count is set to 0 where rx_med_use==0 and count is
-    NaN (known zero, not missing)."""
     rxq = load_xpt("RXQ_RX_L", ["SEQN", "RXQ033", "RXQ050"])
     rxq["RXQ033"] = recode_missing(rxq["RXQ033"], [7, 9])
     rxq["RXQ050"] = recode_missing(rxq["RXQ050"], [7, 9])
@@ -121,14 +110,14 @@ def main():
     hdl = load_xpt("HDL_L", ["SEQN", "LBDHDD"]).rename(
         columns={"LBDHDD": "hdl_cholesterol"})
 
-    trigly = load_xpt("TRIGLY_L", ["SEQN", "LBXTLG", "LBDLDL"]).rename(
-        columns={"LBXTLG": "triglycerides", "LBDLDL": "ldl_cholesterol"})
+    trigly = load_xpt("TRIGLY_L", ["SEQN", "LBXTLG"]).rename(
+        columns={"LBXTLG": "triglycerides"})
 
     ghb = load_xpt("GHB_L", ["SEQN", "LBXGH"]).rename(columns={"LBXGH": "hba1c"})
 
     glu = load_xpt("GLU_L", ["SEQN", "LBXGLU"]).rename(columns={"LBXGLU": "fasting_glucose"})
 
-    # omega3_index: EPA + DHA (LBXPPE + LBXPHA), the standard Omega-3 Index, used instead of all 21 individual FAR_L fatty acid columns
+    # omega3_index: EPA + DHA (LBXPPE + LBXPHA)
     far = load_xpt("FAR_L", ["SEQN", "LBXPPE", "LBXPHA"])
     far["omega3_index"] = far["LBXPPE"] + far["LBXPHA"]
     far = far[["SEQN", "omega3_index"]]
@@ -145,7 +134,7 @@ def main():
                 "liver_disease", "copd", "thyroid_disease", "cancer"]:
         mcq[col] = recode_missing(mcq[col], [7, 9])
         mcq[col] = (mcq[col] == 1).astype("Int64")
-    # stroke stays raw here; cleaned during inclusion/exclusion below.
+    # stroke stays raw here; cleaned during inclusion/exclusion below
 
     bpq = load_xpt("BPQ_L", ["SEQN", "BPQ020", "BPQ150"]).rename(columns={
         "BPQ020": "hypertension_diagnosis", "BPQ150": "bp_medication",
@@ -172,6 +161,7 @@ def main():
     paq = load_xpt("PAQ_L", ["SEQN", "PAD790Q", "PAD810Q"])
     paq["PAD790Q"] = recode_missing(paq["PAD790Q"], [7777, 9999])
     paq["PAD810Q"] = recode_missing(paq["PAD810Q"], [7777, 9999])
+    # PAD790Q/PAD810Q = days per week of moderate/vigorous activity, any nonzero value treated as active
     paq["moderate_activity"] = ((paq["PAD790Q"].notna()) & (paq["PAD790Q"] > 0)).astype("Int64")
     paq["vigorous_activity"] = ((paq["PAD810Q"].notna()) & (paq["PAD810Q"] > 0)).astype("Int64")
     paq = paq[["SEQN", "moderate_activity", "vigorous_activity"]]
@@ -185,10 +175,11 @@ def main():
     frames = [demo, bpxo, bmx, cbc, tchol, hdl, trigly, ghb, glu, far,
               mcq, bpq, diq, smq, alq, paq, kiq, rxq]
     merged = frames[0]
+    # left join onto demographics as anchor file, SEQN = shared key across all NHANES
     for f in frames[1:]:
         merged = merged.merge(f, on="SEQN", how="left")
 
-    # Descriptive summary of comorbidity count (Table 1 only)
+    # descriptive sum of coexisting conditions count (table 4.1), excluded from predictive models
     risk_components = [
         "hypertension_diagnosis", "bp_medication", "diabetes_diagnosis",
         "heart_failure", "coronary_hd", "heart_attack", "smoke_current",
@@ -197,15 +188,16 @@ def main():
     merged["vascular_risk_score"] = merged[risk_components].sum(axis=1, min_count=1)
 
     n_before = len(merged)
-
+    # inclusion: MCQ160F (stroke item) not administered to participants below age 20
     merged = merged[merged["age"] >= 20]
     n_after_age = len(merged)
-
+    # exclude refused/don't know stroke responses before defining the binary outcome
     merged["stroke"] = recode_missing(merged["stroke"], [7, 9])
     merged = merged.dropna(subset=["stroke"])
     n_after_stroke = len(merged)
 
     merged["stroke"] = (merged["stroke"] == 1).astype(int)
+    # exclude records missing core demographic covariates required for modeling
     merged = merged.dropna(subset=["age", "sex", "race", "income_poverty_ratio"])
     n_final = len(merged)
     n_stroke_final = int(merged["stroke"].sum())
