@@ -24,6 +24,7 @@ BINARY_COLUMNS = [
 ]
 CATEGORICAL_COLUMNS = BINARY_COLUMNS + ["race", "education"]
 
+# dropped before imputation/modeling, recomputed post-imputation for descriptive use only
 DESCRIPTIVE_ONLY_COLUMNS = ["vascular_risk_score"]
 
 VASCULAR_RISK_COMPONENTS = [
@@ -69,8 +70,7 @@ def impute_missing(df, exclude=MICE_EXCLUDE_COLUMNS, iterations=15, random_state
     return completed, kernel
 
 def compare_before_after_imputation(before_df, after_df, columns=WINSORIZE_COLUMNS, out_dir=OUT_DIR):
-    """Summary stats + distribution histograms for continuous columns
-    before (with missing values) vs after MICE. Saved for thesis figures."""
+    #summary stats + distribution histograms for continuous columns before vs after MICE
     fig_dir = os.path.join(out_dir, "imputation_diagnostics")
     os.makedirs(fig_dir, exist_ok=True)
 
@@ -108,6 +108,7 @@ def compute_engineered_features(df):
     df = df.copy()
 
     df["pulse_pressure"] = df["systolic_bp"] - df["diastolic_bp"]
+    # MAP approximated as DBP + one-third pulse pressure
     df["map"] = df["diastolic_bp"] + (df["pulse_pressure"] / 3.0)
     df["chol_hdl_ratio"] = df["total_cholesterol"] / df["hdl_cholesterol"].replace(0, np.nan)
 
@@ -128,7 +129,9 @@ if __name__ == "__main__":
     train = train.reset_index(drop=True)
     test = test.reset_index(drop=True)
 
+    # bounds computed on training set only
     train_w, bounds = winsorize_continuous(train)
+    # same training-set bounds applied to test set
     test_w, _ = winsorize_continuous(test, bounds=bounds)
 
     bounds_df = pd.DataFrame([
@@ -141,6 +144,7 @@ if __name__ == "__main__":
 
     print("Running MICE imputation")
     train_imputed, kernel = impute_missing(train_w, iterations=15)
+    # test set imputed using the kernel fit on training data, not refit
     test_imputed, _ = impute_missing(test_w, kernel=kernel)
     compare_before_after_imputation(train_w, train_imputed)
 
@@ -157,6 +161,3 @@ if __name__ == "__main__":
 
     print(f"Saved {train_out}")
     print(f"Saved {test_out}")
-
-if __name__ == "__main__":
-    main()
