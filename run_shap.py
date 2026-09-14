@@ -14,9 +14,9 @@ LINEAR_MODELS = ["LR"]
 MODEL_ORDER = LINEAR_MODELS + TREE_MODELS
 
 _original_decode_ubjson = _shap_tree_module.decode_ubjson_buffer
-_shap_tree_module.decode_ubjson_buffer = _patched_decode_ubjson
 
 def _patched_decode_ubjson(fd):
+ # workaround for XGBoost/SHAP version mismatch
  jmodel = _original_decode_ubjson(fd)
  try:
   param = jmodel["learner"]["learner_model_param"]
@@ -27,7 +27,10 @@ def _patched_decode_ubjson(fd):
   pass
  return jmodel
 
+_shap_tree_module.decode_ubjson_buffer = _patched_decode_ubjson
+
 def get_positive_class_shap(explainer, X):
+ # normalizes across SHAP output formats
  shap_values = explainer.shap_values(X)
  expected_value = explainer.expected_value
 
@@ -53,12 +56,14 @@ def main():
 
  for model_name in MODEL_ORDER:
   print(f"Computing SHAP values for {model_name}")
+  # loaded from models_tuned by design
   pipe = joblib.load(os.path.join(MODELS_DIR, f"{model_name}_tuned.joblib"))
   preprocessor = pipe.named_steps["preprocessor"]
   classifier = pipe.named_steps["classifier"]
 
   X_test_transformed = preprocessor.transform(X_test)
   raw_names = preprocessor.get_feature_names_out()
+  # strips num__/cat__ prefixes added by ColumnTransformer
   feature_names = [n.split("__")[-1] for n in raw_names]
 
   if model_name in TREE_MODELS:
