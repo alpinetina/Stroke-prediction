@@ -1,0 +1,5 @@
+model,cv_AUC-PRC,test_AUC-ROC,test_AUC-PRC,test_F1,test_G-mean,best_params
+LR,0.1649414057732619,0.8366353840806395,0.22251609714223086,0.22123893805309736,0.7585809785333048,{'classifier__C': 0.05}
+RF,0.1741639294096082,0.8016194853177822,0.13632293714173607,0.2275449101796407,0.6994231217972605,"{'classifier__min_samples_leaf': 20, 'classifier__max_depth': 10}"
+XGBoost,0.1526580729128888,0.7606817801465003,0.10458294534699111,0.045454545454545456,0.17650453565047358,"{'classifier__n_estimators': 200, 'classifier__min_child_weight': 1, 'classifier__max_depth': 6, 'classifier__learning_rate': 0.1}"
+LightGBM,0.177093155776927,0.7873041620000257,0.12408225578980833,0.20437956204379562,0.6152078270401583,"{'classifier__num_leaves': 31, 'classifier__n_estimators': 100, 'classifier__min_child_samples': 50, 'classifier__max_depth': 4}"
