@@ -18,8 +18,8 @@ from train_models import get_feature_target, TRAIN_PATH, TEST_PATH
 from shap.plots._style import set_style
 
 FIGURES_DIR = "figures"
-MODELS_TUNED_DIR = "models_tuned"
-MODELS_CALIBRATED_DIR = "models_calibrated"
+MODELS_TUNED_DIR = "models_tuned"   #source for SHAP/feature-importance
+MODELS_CALIBRATED_DIR = "models_calibrated"   #source for all performance/clinical-utility figures and tables
 RAW_PATH = os.path.join("data", "processed", "nhanes_merged_raw.csv")
 CALIBRATED_RESULTS_PATH = os.path.join("data", "processed", "model_performance_calibrated.csv")
 SHAP_VALUES_DIR = "shap_values"
@@ -37,7 +37,7 @@ SHAP_FEATURED_MODEL = "LR"
 
 COLORS = {"LR": "#c2255c", "RF": "#2b8a3e", "XGBoost": "#e64980", "LightGBM": "#40c057"}
 DIVERGING_CMAP = "PiYG"
-# Colors for stubborn SHAP plots
+#colors for stubborn SHAP plots
 _piyg = plt.get_cmap(DIVERGING_CMAP)
 pink_hex = mcolors.to_hex(_piyg(0.2))
 green_hex = mcolors.to_hex(_piyg(0.8))
@@ -64,7 +64,7 @@ def display_name(col):
     return RACE_LABELS.get(col, col)
 
 
-# Table 1
+#table 4.1
 CONTINUOUS_VARS = [
     "age", "income_poverty_ratio", "bmi", "waist_circumference_cm",
     "systolic_bp", "diastolic_bp", "hba1c", "fasting_glucose",
@@ -150,7 +150,7 @@ def run_table1(train_df, test_df):
     combined.to_csv(TABLE1_PATH, index=False)
 
 
-# Correlation heatmap
+#correlation heatmap
 CORRELATION_VARS = [
     "stroke", "age", "income_poverty_ratio", "bmi", "waist_circumference_cm",
     "systolic_bp", "diastolic_bp", "pulse_pressure", "map", "hba1c",
@@ -180,7 +180,7 @@ def run_correlation_heatmap(imputed_df):
     corr.to_csv(CORR_PEARSON_PATH)
 
 
-# Discrimination + calibration
+#discrimination + calibration
 def load_calibrated_probas(X_test):
     probas = {}
     for model_name in MODEL_ORDER:
@@ -221,7 +221,7 @@ def run_discrimination(probas, y_test):
     fig.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-# Confusion matrices
+# confusion matrices
 def _plot_cm(ax, cm, model_name, threshold):
     ax.imshow(cm, cmap=DIVERGING_CMAP)
     ax.set_xticks([0, 1])
@@ -265,7 +265,7 @@ def run_confusion_matrices(probas, y_test):
     plt.close(fig)
     pd.DataFrame(rows).to_csv(CONFUSION_STATS_PATH, index=False)
 
-# Decision curve
+# decision curve
 DCA_THRESHOLDS = np.arange(0.01, 0.40, 0.01)
 
 
@@ -321,7 +321,7 @@ def run_dca(probas, y_test):
     plt.close(fig)
     pd.DataFrame(rows).to_csv(DCA_RESULTS_PATH, index=False)
 
-# Consistent top predictors
+#consistent top predictor
 def _get_native_importance(model_name):
     pipe = joblib.load(os.path.join(MODELS_TUNED_DIR, f"{model_name}_tuned.joblib"))
     preprocessor = pipe.named_steps["preprocessor"]
@@ -441,10 +441,6 @@ def run_shap_dependence():
     fig.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close(fig)
 
-
-import matplotlib.colors as mcolors
-
-
 def _plot_local(patient_idx, label, filename_stub):
     expl, _ = _load_explanation(SHAP_FEATURED_MODEL)
     plt.figure()
@@ -455,15 +451,6 @@ def _plot_local(patient_idx, label, filename_stub):
     out_png = os.path.join(FIGURES_DIR, f"{filename_stub}_{SHAP_FEATURED_MODEL}.png")
     plt.savefig(out_png, dpi=200, bbox_inches="tight")
     plt.close()
-
-def run_shap_local(X_test, y_test):
-    selection_pipe = joblib.load(os.path.join(MODELS_TUNED_DIR, f"{SHAP_FEATURED_MODEL}_tuned.joblib"))
-    proba = selection_pipe.predict_proba(X_test)[:, 1]
-    high_idx = int(np.argmax(proba))
-    low_idx = int(np.argmin(proba))
-    _plot_local(high_idx, "Highest-Risk Patient", "shap_local_high_risk")
-    _plot_local(low_idx, "Lowest-Risk Patient", "shap_local_low_risk")
-
 
 def main():
     warnings.filterwarnings("ignore")
@@ -488,7 +475,6 @@ def main():
 
     run_shap_summary()
     run_shap_dependence()
-    run_shap_local(X_test, y_test)
 
     print("Saved all generated CSV files in data\\processed\\ and plots in figures\\")
 
