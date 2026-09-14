@@ -57,6 +57,21 @@ SEARCH_SPACE = {
     ),
 }
 
+
+def print_tuned_params_table(search_space=SEARCH_SPACE, models_dir=MODELS_TUNED_DIR):
+    # reloads saved pipelines and prints only the searched hyperparameters, matching the Table 3.3 layout
+    print("\nTable 3.3: best-performing configuration per model")
+    for model_name, (_, param_dist, _) in search_space.items():
+        pipe = joblib.load(os.path.join(models_dir, f"{model_name}_tuned.joblib"))
+        classifier = pipe.named_steps["classifier"]
+        params = classifier.get_params()
+
+        print(f"\n{model_name}")
+        for full_key in param_dist:
+            key = full_key.replace("classifier__", "")
+            print(f"  {key}: {params.get(key)}")
+
+
 def main():
     warnings.filterwarnings("ignore", category=FutureWarning)
     warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
@@ -92,6 +107,7 @@ def main():
         best_model = search.best_estimator_
         joblib.dump(best_model, os.path.join(MODELS_TUNED_DIR, f"{model_name}_tuned.joblib"))
         test_proba = best_model.predict_proba(X_test)[:, 1]
+        # provisional 0.5 threshold for this CV-stage snapshot only, final G-mean-maximizing threshold set later in calibration
         test_pred = (test_proba >= 0.5).astype(int)
 
         rows.append({
@@ -111,6 +127,8 @@ def main():
     os.makedirs(os.path.dirname(RESULTS_PATH), exist_ok=True)
     results.to_csv(RESULTS_PATH, index=False)
     print(f"\nSaved {RESULTS_PATH} (includes best_params per model)")
+
+    print_tuned_params_table()
 
 if __name__ == "__main__":
     main()
